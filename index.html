@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+    <h1>Student Questionnaire</h1>
+    <h2>Student: John Johnson</h2>
+    <h4 id="demo">Text that will change</h4>
+    <button onclick="loadDoc()">Test 1</button>
+    
+    <script>
+        function loadDoc(){
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function(){
+            if (this.readyState == 4 && this.status == 200){
+                getJSON(this);
+            }
+        }
+        request.open("GET", "questions3.json", true);
+        request.send();
+        }
+
+        function getJSON(que) {
+            var que2 = JSON.parse(que.responseText);
+            var end = que2.questionnaire.length;
+            var btns = '<form action="QuestionsSubmitPg.php" method="POST" name="questionnaire"><ol>';
+            var inputType = '<input type = "radio" name = "q';
+            var valueForY = '" value="1" id="yes';
+            var valueForN = '" value="0" id="no';
+            var labelForY = '<label for="yes';
+            var labelForN = '<label for="no';
+            
+            for (var i=0; i<end; i++){
+                var j = i + 1;
+                btns += '<li>' + que2.questionnaire[i] + '<br/>' + inputType + j + valueForY + j + '" required>' +
+                labelForY + j + '">yes</label>'+ inputType + j + valueForN + j + '">' + 
+                labelForN + j + '">no</label></li><br />';
+            }
+            btns += '</ol><input type="submit" value="submit"></form>';
+            document.getElementById("demo").innerHTML = btns;
+        }
+
+
+    </script>
+</body>
+</html>
